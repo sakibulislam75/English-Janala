@@ -18,6 +18,57 @@ const press = (id) => {
             show1(dt.data)
         })
 }
+const modalOpen = async(id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`
+    const link = await fetch(url);
+    const details = await link.json();
+    displayWordDetails(details.data);
+
+}
+const displayWordDetails = (details) => {
+    const container = document.getElementById('details-container');
+    container.innerHTML = `<div class='pl-3' >
+
+    <!-- Word Title -->
+    <h2 class="text-3xl font-bold">
+        ${details.word} <span class="text-3xl">(<i class="fa-solid fa-microphone-lines"></i> : ${details.word})</span>
+    </h2>
+
+    <!-- Meaning -->
+    <div class="mt-4 space-y-1">
+        <p class=" text-sm font-semibold">Meaning</p>
+        <p class="font-medium">${details.meaning}</p>
+    </div>
+
+    <!-- Example -->
+    <div class="mt-4 space-y-1">
+        <p class=" text-sm font-semibold">Example</p>
+        <p class="italic text-sm">
+            ${details.sentence}
+        </p>
+    </div>
+
+    <!-- Synonyms -->
+    <div class="mt-4 ">
+        <p class="font-semibold text-sm mb-2">Synonyms</p>
+
+        <div class="flex flex-wrap gap-2">
+            <span class="badge badge-outline badge-info">${details?.synonyms?.[0] ? details.synonyms[0] : "N/A"}</span>
+            <span class="badge badge-outline badge-info">${details?.synonyms?.[1] ? details.synonyms[1] : "N/A"}</span>
+            <span class="badge badge-outline badge-info">${details?.synonyms?.[2] ? details.synonyms[2] : "N/A"}</span>
+        </div>
+    </div>
+
+    <!-- Button -->
+    <button class="btn btn-primary mt-10 rounded-[12px] ">
+        Complete Learning
+    </button>
+
+</div>
+    `;
+    document.getElementById('word_modal').showModal();
+
+}
 const show1 = (elements) => {
     const container2 = document.getElementById('container-2');
     container2.innerHTML = '';
@@ -41,8 +92,8 @@ const show1 = (elements) => {
                     <p >Meaning/Pronounciation</p><br>
                     <h3>${element.meaning ? element.meaning:"শব্দ পাউয়া জায়নি"}/${element.pronounciation? element.pronounciation:"শব্দ পাউয়া জায়নি"}</h3>
                     <div class='flex justify-between items-center' >
-                    <button class='btn bg-[#1A91FF] opacity-20  rounded-md font-bold'><i class="fa-solid font-bold fa-circle-info"></i></button>
-                    <button class='btn bg-[#1A91FF] opacity-20 rounded-md font-bold'><i class="fa-solid fa-volume-high text-black "></i></button>
+                    <button onclick='modalOpen(${element.id})' class='btn   rounded-md   bg-sky-50'><i class="fa-solid  fa-circle-info"></i></button>
+                    <button class='btn  rounded-md  bg-sky-50' ><i class="fa-solid fa-volume-high  "></i></button>
                     </div>
                 </div>`
 
