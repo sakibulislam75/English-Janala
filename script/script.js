@@ -81,7 +81,11 @@ ${details.synonyms
     `;
   document.getElementById("word_modal").showModal();
 };
-
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
 
 //when press lesson button show this
 const show1 = (elements) => {
@@ -108,7 +112,9 @@ const show1 = (elements) => {
                     <h3>${element.meaning ? element.meaning : "শব্দ পাউয়া জায়নি"}/${element.pronounciation ? element.pronounciation : "শব্দ পাউয়া জায়নি"}</h3>
                     <div class='flex justify-between items-center' >
                     <button onclick='modalOpen(${element.id})' class='btn   rounded-md   bg-sky-50'><i class="fa-solid  fa-circle-info"></i></button>
-                    <button class='btn  rounded-md  bg-sky-50' ><i class="fa-solid fa-volume-high  "></i></button>
+                    <button onclick="pronounceWord('${element.word}')" class="btn rounded-md bg-sky-50">
+<i class="fa-solid fa-volume-high"></i>
+</button>
                     </div>
                 </div>`;
 
