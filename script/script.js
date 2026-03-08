@@ -1,12 +1,17 @@
+//load all the lesson class
 const loadAll = () => {
     fetch("https://openapi.programming-hero.com/api/levels/all")
         .then((response) => response.json())
         .then((data) => show(data.data));
 };
+
+//active class remover
 const removeActiveClass = () => {
     const rmv = document.querySelectorAll(".lesson-btn");
     rmv.forEach((i) => i.classList.remove("active"));
 };
+
+//lesson button function
 const press = (id) => {
     manageSpinner(true);
     const url = `https://openapi.programming-hero.com/api/level/${id}`;
@@ -20,12 +25,17 @@ const press = (id) => {
             manageSpinner(false);
         });
 };
+
+
+//modal api fetch
 const modalOpen = async(id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`;
     const link = await fetch(url);
     const details = await link.json();
     displayWordDetails(details.data);
 };
+
+//modal details show
 const displayWordDetails = (details) => {
         const container = document.getElementById("details-container");
         container.innerHTML = `<div class='pl-3' >
@@ -71,6 +81,9 @@ ${details.synonyms
     `;
   document.getElementById("word_modal").showModal();
 };
+
+
+//when press lesson button show this
 const show1 = (elements) => {
   const container2 = document.getElementById("container-2");
   container2.innerHTML = "";
@@ -104,6 +117,7 @@ const show1 = (elements) => {
     
 };
 
+//all lesson btn
 const show = (lessons) => {
   const container = document.getElementById("container-1");
   container.innerHTML = "";
@@ -116,6 +130,7 @@ const show = (lessons) => {
   }
 };
 
+//loading spinner
 const manageSpinner = (status) => {
   if (status == true) {
     document.getElementById("spinner").classList.remove("hidden");
@@ -125,5 +140,19 @@ const manageSpinner = (status) => {
     document.getElementById("spinner").classList.add("hidden");
   }
 };
+
+//search-btn
+document.getElementById('btn-search').addEventListener('click',function(){
+  removeActiveClass();//when click search btn remove all btn active class
+  const input=document.getElementById('input-search');
+  const searchValue = input.value.trim().toLowerCase();
+ fetch('https://openapi.programming-hero.com/api/words/all')
+ .then(res=>res.json())
+ .then(dt=>{
+  const allWords=dt.data;
+  const filterWord=allWords.filter(word=>word.word.toLowerCase().includes(searchValue));
+  show1(filterWord);
+ })
+})
 
 loadAll();
